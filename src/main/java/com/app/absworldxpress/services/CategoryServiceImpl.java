@@ -96,4 +96,14 @@ public class CategoryServiceImpl implements CategoryService{
             return new ResponseEntity<>(new ApiMessageResponse(200,"Category Not Found"),HttpStatus.OK);
         }
     }
+
+    @Override
+    public ResponseEntity<ApiMessageResponse> deteleCategory(String categoryId) {
+        return null;
+    }
+
+    @Override
+    public ResponseEntity<ApiMessageResponse> editCategory(String categoryId, CategoryRequest categoryRequest) {
+        return null;
+    }
 }

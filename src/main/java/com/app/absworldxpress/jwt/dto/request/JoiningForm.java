@@ -12,14 +12,9 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-public class SignUpForm {
-
-    @NotBlank
-    @Size(min = 1, max = 50)
-    private String firstName;
-    @NotBlank
-    @Size(min = 1, max = 50)
-    private String lastName;
+public class JoiningForm {
+//    String dob;
+//    String nid;
 
     @NotBlank
     @Size(max = 60)
@@ -35,7 +30,15 @@ public class SignUpForm {
     @NotBlank
     @Size(min = 6, max = 40)
     private String password;
+    String address;
+    @NotBlank
+    @Size(min = 1, max = 50)
+    private String firstName;
+    @NotBlank
+    @Size(min = 1, max = 50)
+    private String lastName;
 
-    private String deliveryAddress;
+    private String createdBy;
+    private String createdOn;
 
 }

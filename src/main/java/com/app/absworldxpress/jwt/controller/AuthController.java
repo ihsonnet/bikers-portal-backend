@@ -3,6 +3,7 @@ package com.app.absworldxpress.jwt.controller;
 import com.app.absworldxpress.dto.ApiResponse;
 import com.app.absworldxpress.jwt.dto.request.LoginForm;
 import com.app.absworldxpress.jwt.dto.request.SignUpForm;
+import com.app.absworldxpress.jwt.dto.request.JoiningForm;
 import com.app.absworldxpress.jwt.dto.response.LoggedUserDetailsResponse;
 import com.app.absworldxpress.jwt.model.User;
 import com.app.absworldxpress.jwt.services.SignUpAndSignInService;
@@ -31,9 +32,15 @@ public class AuthController {
         return ResponseEntity.ok(signUpAndSignInService.signIn(loginRequest));
     }
 
+
+    @PostMapping("/new-joining")
+    public Object registerUser(@RequestBody JoiningForm signUpRequest) throws DuplicateMemberException {
+        return signUpAndSignInService.newJoining(signUpRequest);
+    }
+
     @PostMapping("/signup")
-    public Object registerUser(@RequestBody SignUpForm signUpRequest) throws DuplicateMemberException {
-        return signUpAndSignInService.signUp(signUpRequest);
+    public Object ecommerceSignup(@RequestBody SignUpForm signUpRequest) throws DuplicateMemberException {
+        return signUpAndSignInService.ecommerceSignup(signUpRequest);
     }
 
 //    @GetMapping("/users")

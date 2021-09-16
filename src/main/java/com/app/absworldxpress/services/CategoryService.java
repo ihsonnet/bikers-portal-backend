@@ -18,4 +18,8 @@ public interface CategoryService {
     ResponseEntity<ApiResponse<CategoryImageResponse>> uploadCategoryImage(MultipartFile aFile, String categoryId);
 
     ResponseEntity<ApiMessageResponse> deleteCategoryImage(String categoryId);
+
+    ResponseEntity<ApiMessageResponse> deteleCategory(String categoryId);
+
+    ResponseEntity<ApiMessageResponse> editCategory(String categoryId, CategoryRequest categoryRequest);
 }

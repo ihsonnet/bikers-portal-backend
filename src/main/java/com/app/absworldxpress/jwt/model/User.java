@@ -30,30 +30,20 @@ public class User {
     @NotBlank
     @Size(min = 11, max = 11)
     String phoneNo;
-//    @Size(min = 0, max = 6)
-//    int generatedOTP;
-//    boolean passwordReset;
+
     @NotBlank
     @Size(min = 3, max = 50)
     private String firstName;
+
+    @NotBlank
+    @Size(min = 3, max = 50)
+    private String lastName;
 
     @Column(unique = true)
     @NotBlank
     @Size(min = 3, max = 100)
     private String username;
 
-    @NotBlank
-    @Size(min = 6, max = 100)
-    private String password;
-
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "user_roles",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "role_id"))
-    private Set<Role> roles = new HashSet<>();
-    @NotBlank
-    @Size(min = 3, max = 50)
-    private String lastName;
     @Column(unique = true)
     @NaturalId
     @NotBlank
@@ -61,10 +51,36 @@ public class User {
     @Email
     private String email;
 
-//    @ManyToMany
-//    @JsonIgnore
-//    private List<Project> projects;
+    @NotBlank
+    @Size(min = 6, max = 100)
+    private String password;
+
+    @JsonIgnore
+    int generatedOTP=1234;
+
+    @JsonIgnore
+    boolean passwordReset;
+
+
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "user_roles",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id"))
+    private Set<Role> roles = new HashSet<>();
+
+    private String referralUsername;
+    private String isActiveIncomeAccount;
 
     private String createdBy;
     private String createdOn;
+    private String joiningDate;
+    private String ExpiryDate;
+
+    private double regBalance;
+    private double IncomeBalance;
+    private double shopBalance;
+
+    @OneToMany
+    @JsonIgnore
+    private List<User> myTeam;
 }

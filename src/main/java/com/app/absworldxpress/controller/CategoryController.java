@@ -32,6 +32,16 @@ public class CategoryController {
         return categoryService.getCategory();
     }
 
+    @DeleteMapping("/{categoryId}")
+    public ResponseEntity<ApiMessageResponse> deteleCategory(@PathVariable String categoryId){
+        return categoryService.deteleCategory(categoryId);
+    }
+
+    @PutMapping("/{categoryId}")
+    public ResponseEntity<ApiMessageResponse> editCategory(@PathVariable String categoryId, @RequestBody CategoryRequest categoryRequest){
+        return categoryService.editCategory(categoryId, categoryRequest);
+    }
+
     @PostMapping("/image/{categoryId}")
     public ResponseEntity<ApiResponse<CategoryImageResponse>> uploadCategoryImage(@RequestParam(value = "image", required = true) MultipartFile aFile,
                                                                                   @PathVariable String categoryId) {

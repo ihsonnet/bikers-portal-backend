@@ -1,11 +1,10 @@
 package com.app.absworldxpress.jwt.services;
 
 import com.app.absworldxpress.jwt.dto.request.SignUpForm;
+import com.app.absworldxpress.jwt.dto.request.JoiningForm;
 import com.app.absworldxpress.jwt.dto.response.JwtResponse;
 import com.app.absworldxpress.jwt.dto.response.LoggedUserDetailsResponse;
 import com.app.absworldxpress.jwt.dto.response.UserResponse;
-import com.app.absworldxpress.jwt.model.Role;
-import com.app.absworldxpress.jwt.model.RoleName;
 import com.app.absworldxpress.jwt.repository.RoleRepository;
 import com.app.absworldxpress.jwt.repository.UserRepository;
 import com.app.absworldxpress.jwt.security.jwt.JwtProvider;
@@ -26,7 +25,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import javax.validation.ValidationException;
 import java.util.*;
 
 
@@ -44,12 +42,10 @@ public class SignUpAndSignInService {
     private UserRepository userRepository;
     @Autowired
     private RoleRepository roleRepository;
-//    @Autowired
-//    private TeamRepository teamRepository;
+    @Autowired
+    AuthService authService;
 
-//    private final AreaNameRepository areaNameRepository;
-
-    public Object signUp(SignUpForm signUpRequest) {
+    public Object newJoining(JoiningForm signUpRequest) {
 
 
         if (userRepository.existsByEmail(signUpRequest.getEmail())) {
@@ -69,7 +65,7 @@ public class SignUpAndSignInService {
         user.setEmail(signUpRequest.getEmail());
         user.setPhoneNo(signUpRequest.getPhoneNo());
         user.setPassword(encoder.encode(signUpRequest.getPassword()));
-        user.setRoles(getRolesFromStringToRole(signUpRequest.getRole()));
+        user.setRoles(authService.getRolesFromStringToRole(signUpRequest.getRole()));
         user.setCreatedBy(signUpRequest.getCreatedBy());
         user.setCreatedOn(signUpRequest.getCreatedOn());
         userRepository.saveAndFlush(user);
@@ -98,8 +94,52 @@ public class SignUpAndSignInService {
     }
 
 
+    public Object ecommerceSignup(SignUpForm signUpRequest) {
+
+
+        if (userRepository.existsByEmail(signUpRequest.getEmail())) {
+            //return true;
+            return new JwtResponse("Email Already Exists");
+        }
+
+
+        User user = new User();
+        UUID id = UUID.randomUUID();
+        String uuid = id.toString();
+        user.setId(uuid);
+        user.setFirstName(signUpRequest.getFirstName());
+        user.setLastName(signUpRequest.getLastName());
+
+        String[] arrOfUsername = signUpRequest.getEmail().split("@", 2);
+        user.setUsername(arrOfUsername[0]);
+
+        user.setEmail(signUpRequest.getEmail());
+        user.setPhoneNo(signUpRequest.getPhoneNo());
+        user.setPassword(encoder.encode(signUpRequest.getPassword()));
+        user.setRoles(authService.getRolesFromStringToRole(signUpRequest.getRole()));
+
+        user.setCreatedBy(arrOfUsername[0]);
+//        user.setCreatedOn(signUpRequest.getCreatedOn());
+
+        userRepository.saveAndFlush(user);
+        System.out.println(1);
+
+        Authentication authentication = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(
+                        user.getUsername(),
+                        signUpRequest.getPassword()
+                )
+        );
+
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+        String jwt = jwtProvider.generateJwtToken(authentication);
+
+        return new JwtResponse("OK", jwt, signUpRequest.getRole());
+    }
+
+
     public JwtResponse signIn(LoginForm loginRequest) {
-        Optional<User> userOptional = userRepository.findByEmail(loginRequest.getEmail());
+        Optional<User> userOptional = userRepository.findByUsername(loginRequest.getUsername());
 
         String userName;
         if (userOptional.isPresent()) {
@@ -120,7 +160,8 @@ public class SignUpAndSignInService {
 
         String jwt = jwtProvider.generateJwtToken(authentication);
 
-        return new JwtResponse("OK", jwt, getRolesStringFromRole(userOptional.get().getRoles()));
+        System.out.println(jwt);
+        return new JwtResponse("OK", jwt, authService.getRolesStringFromRole(userOptional.get().getRoles()));
     }
 
     public ResponseEntity<UserResponse> getLoggedAuthUser() {
@@ -136,7 +177,7 @@ public class SignUpAndSignInService {
                 User user = userOptional.get();
 
                 UserResponse userResponse = new UserResponse(user.getId(), user.getUsername(), user.getEmail(), user.getFirstName(),
-                        user.getLastName(), user.getPhoneNo(), getRolesStringFromRole(user.getRoles()), user.getCreatedBy(), user.getCreatedOn());
+                        user.getLastName(), user.getPhoneNo(), authService.getRolesStringFromRole(user.getRoles()), user.getCreatedBy(), user.getCreatedOn());
 
                 HttpHeaders httpHeaders = new HttpHeaders();
                 httpHeaders.add("massage", "OK");
@@ -157,30 +198,6 @@ public class SignUpAndSignInService {
 
     }
 
-
-    public Set<Role> getRolesFromStringToRole(Set<String> roles2) {
-        Set<Role> roles = new HashSet<>();
-        for (String role : roles2) {
-            System.out.println(role);
-            Optional<Role> roleOptional = roleRepository.findByName(RoleName.valueOf(role));
-//            System.out.println(roleOptional.get());
-
-            if (!roleOptional.isPresent()) {
-                throw new ValidationException("Role '" + role + "' does not exist.");
-            }
-            roles.add(roleOptional.get());
-        }
-        return roles;
-    }
-
-    private Set<String> getRolesStringFromRole(Set<Role> roles2) {
-        Set<String> roles = new HashSet<>();
-        for (Role role : roles2) {
-
-            roles.add(role.getName().toString());
-        }
-        return roles;
-    }
 
 //    public ResponseEntity changePass(PassChangeRequest passChangeRequest) {
 //
