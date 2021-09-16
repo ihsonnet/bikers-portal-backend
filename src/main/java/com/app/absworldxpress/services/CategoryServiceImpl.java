@@ -4,6 +4,7 @@ import com.app.absworldxpress.dto.ApiMessageResponse;
 import com.app.absworldxpress.dto.ApiResponse;
 import com.app.absworldxpress.dto.request.CategoryRequest;
 import com.app.absworldxpress.dto.response.CategoryImageResponse;
+import com.app.absworldxpress.jwt.services.AuthService;
 import com.app.absworldxpress.model.CategoryModel;
 import com.app.absworldxpress.repository.CategoryRepository;
 import com.app.absworldxpress.util.UserUtils;
@@ -25,19 +26,27 @@ public class CategoryServiceImpl implements CategoryService{
     @Autowired
     private CategoryRepository categoryRepository;
 
+    @Autowired
+    private AuthService authService;
+
     @Override
-    public ResponseEntity<ApiMessageResponse> addCategory(CategoryRequest categoryRequest) {
+    public ResponseEntity<ApiMessageResponse> addCategory(String token, CategoryRequest categoryRequest) {
 
-        CategoryModel category = new CategoryModel();
-        UUID id = UUID.randomUUID();
-        String uuid = id.toString();
+        if (authService.isAdmin(token)){
+            CategoryModel category = new CategoryModel();
+            UUID id = UUID.randomUUID();
+            String uuid = id.toString();
 
-        category.setCatId(uuid);
-        category.setCatName(categoryRequest.getCatName());
-        category.setCatSlug(categoryRequest.getCatSlug());
+            category.setCatId(uuid);
+            category.setCatName(categoryRequest.getCatName());
+            category.setCatSlug(categoryRequest.getCatSlug());
 
-        categoryRepository.save(category);
-        return new ResponseEntity<>(new ApiMessageResponse(200,"Category Created Successfully"),HttpStatus.CREATED);
+            categoryRepository.save(category);
+            return new ResponseEntity<>(new ApiMessageResponse(201,"Category Created Successfully"),HttpStatus.CREATED);
+        }
+        else
+            return new ResponseEntity<>(new ApiMessageResponse(400,"You have no permission"),HttpStatus.BAD_REQUEST);
+
     }
 
     @Override
@@ -98,12 +107,12 @@ public class CategoryServiceImpl implements CategoryService{
     }
 
     @Override
-    public ResponseEntity<ApiMessageResponse> deteleCategory(String categoryId) {
+    public ResponseEntity<ApiMessageResponse> deleteCategory(String token, String categoryId) {
         return null;
     }
 
     @Override
-    public ResponseEntity<ApiMessageResponse> editCategory(String categoryId, CategoryRequest categoryRequest) {
+    public ResponseEntity<ApiMessageResponse> editCategory(String token, String categoryId, CategoryRequest categoryRequest) {
         return null;
     }
 }

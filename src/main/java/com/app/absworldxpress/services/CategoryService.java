@@ -11,7 +11,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.List;
 
 public interface CategoryService {
-    ResponseEntity<ApiMessageResponse> addCategory(CategoryRequest categoryRequest);
+    ResponseEntity<ApiMessageResponse> addCategory(String token, CategoryRequest categoryRequest);
 
     ResponseEntity<ApiResponse<List<CategoryModel>>> getCategory();
 
@@ -19,7 +19,7 @@ public interface CategoryService {
 
     ResponseEntity<ApiMessageResponse> deleteCategoryImage(String categoryId);
 
-    ResponseEntity<ApiMessageResponse> deteleCategory(String categoryId);
+    ResponseEntity<ApiMessageResponse> deleteCategory(String token, String categoryId);
 
-    ResponseEntity<ApiMessageResponse> editCategory(String categoryId, CategoryRequest categoryRequest);
+    ResponseEntity<ApiMessageResponse> editCategory(String token, String categoryId, CategoryRequest categoryRequest);
 }

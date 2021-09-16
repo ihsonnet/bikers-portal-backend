@@ -23,8 +23,8 @@ public class CategoryController {
     private CategoryService categoryService;
 
     @PostMapping
-    public ResponseEntity<ApiMessageResponse> addCategory(@RequestBody CategoryRequest categoryRequest){
-        return categoryService.addCategory(categoryRequest);
+    public ResponseEntity<ApiMessageResponse> addCategory(@RequestHeader(name = "Authorization") String token,@RequestBody CategoryRequest categoryRequest){
+        return categoryService.addCategory(token,categoryRequest);
     }
 
     @GetMapping
@@ -33,13 +33,13 @@ public class CategoryController {
     }
 
     @DeleteMapping("/{categoryId}")
-    public ResponseEntity<ApiMessageResponse> deteleCategory(@PathVariable String categoryId){
-        return categoryService.deteleCategory(categoryId);
+    public ResponseEntity<ApiMessageResponse> deleteCategory(@RequestHeader(name = "Authorization") String token,@PathVariable String categoryId){
+        return categoryService.deleteCategory(token,categoryId);
     }
 
     @PutMapping("/{categoryId}")
-    public ResponseEntity<ApiMessageResponse> editCategory(@PathVariable String categoryId, @RequestBody CategoryRequest categoryRequest){
-        return categoryService.editCategory(categoryId, categoryRequest);
+    public ResponseEntity<ApiMessageResponse> editCategory(@RequestHeader(name = "Authorization") String token, @PathVariable String categoryId, @RequestBody CategoryRequest categoryRequest){
+        return categoryService.editCategory(token,categoryId, categoryRequest);
     }
 
     @PostMapping("/image/{categoryId}")
