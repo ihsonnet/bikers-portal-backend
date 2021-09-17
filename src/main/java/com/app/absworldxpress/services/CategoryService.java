@@ -15,9 +15,9 @@ public interface CategoryService {
 
     ResponseEntity<ApiResponse<List<CategoryModel>>> getCategory();
 
-    ResponseEntity<ApiResponse<CategoryImageResponse>> uploadCategoryImage(MultipartFile aFile, String categoryId);
+    ResponseEntity<ApiResponse<CategoryImageResponse>> uploadCategoryImage(String token, MultipartFile aFile, String categoryId);
 
-    ResponseEntity<ApiMessageResponse> deleteCategoryImage(String categoryId);
+    ResponseEntity<ApiMessageResponse> deleteCategoryImage(String token, String categoryId);
 
     ResponseEntity<ApiMessageResponse> deleteCategory(String token, String categoryId);
 

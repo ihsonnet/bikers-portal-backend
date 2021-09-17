@@ -25,12 +25,12 @@ public class AuthService {
     @Autowired
     JwtProvider jwtProvider;
 
-    public boolean isAdmin(String token){
+    public boolean isThisUser(String roleName,String token){
         String  username = jwtProvider.getUserNameFromJwt(token);
         Optional<User> userOptional = userRepository.findByUsername(username);
         if (userOptional.isPresent()){
             User user = userOptional.get();
-            if (getRolesStringFromRole(user.getRoles()).contains("ADMIN")){
+            if (getRolesStringFromRole(user.getRoles()).contains(roleName)){
                 return true;
             }
             else return false;

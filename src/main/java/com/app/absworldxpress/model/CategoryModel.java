@@ -17,4 +17,9 @@ public class CategoryModel {
     private String catName;
     private String catSlug;
     private String catImage;
+
+    private String createdBy;
+    private Long creationTime;
+    private String UpdatedBy;
+    private Long updatedTime;
 }

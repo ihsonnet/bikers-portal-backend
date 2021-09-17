@@ -15,7 +15,7 @@ import java.util.Map;
 
 @AllArgsConstructor
 @Service
-public class UserUtils {
+public class ImageUtilService {
     public static List<String> uploadImage(MultipartFile[] aFile) throws Exception {
 
         List<String> photoLinksList = new ArrayList<>();

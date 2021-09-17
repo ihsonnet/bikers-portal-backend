@@ -14,4 +14,9 @@ public class CategoryResponse {
     String catName;
     String catSlug;
     String catImage;
+
+    String createdBy;
+    Long creationTime;
+    String UpdatedBy;
+    Long updatedTime;
 }

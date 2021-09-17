@@ -43,13 +43,15 @@ public class CategoryController {
     }
 
     @PostMapping("/image/{categoryId}")
-    public ResponseEntity<ApiResponse<CategoryImageResponse>> uploadCategoryImage(@RequestParam(value = "image", required = true) MultipartFile aFile,
+    public ResponseEntity<ApiResponse<CategoryImageResponse>> uploadCategoryImage(@RequestHeader(name = "Authorization") String token,
+                                                                                  @RequestParam(value = "image", required = true) MultipartFile aFile,
                                                                                   @PathVariable String categoryId) {
-        return categoryService.uploadCategoryImage(aFile,categoryId);
+        return categoryService.uploadCategoryImage(token,aFile,categoryId);
     }
 
     @DeleteMapping("/image/{categoryId}")
-    public ResponseEntity<ApiMessageResponse> deleteCategoryImage(@PathVariable String categoryId) {
-        return categoryService.deleteCategoryImage(categoryId);
+    public ResponseEntity<ApiMessageResponse> deleteCategoryImage(@RequestHeader(name = "Authorization") String token,
+                                                                  @PathVariable String categoryId) {
+        return categoryService.deleteCategoryImage(token,categoryId);
     }
 }
