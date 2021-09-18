@@ -139,7 +139,17 @@ public class ProductServiceImpl implements ProductService{
 
     @Override
     public ResponseEntity<ApiMessageResponse> deleteProduct(String token, String productId) {
-        return null;
+        if (authService.isThisUser("ADMIN", token)){
+            Optional<ProductModel> productModelOptional = productRepository.findById(productId);
+            if (productModelOptional.isPresent()){
+                productRepository.deleteById(productId);
+                return new ResponseEntity<>(new ApiMessageResponse(200, "Product Deleted Successfully"),HttpStatus.OK);
+            }
+            else
+                return new ResponseEntity<>(new ApiMessageResponse(400, "Product Not Found"),HttpStatus.BAD_REQUEST);
+        }
+        else
+            return new ResponseEntity<>(new ApiMessageResponse(400, "You have no permission"),HttpStatus.BAD_REQUEST);
     }
 
     @Override
