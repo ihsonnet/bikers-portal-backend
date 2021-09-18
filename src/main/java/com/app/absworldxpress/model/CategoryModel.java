@@ -1,11 +1,13 @@
 package com.app.absworldxpress.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
 @Entity
+@Builder
 @Getter
 @Setter
 @AllArgsConstructor
@@ -18,8 +20,12 @@ public class CategoryModel {
     private String catSlug;
     private String catImage;
 
+    @JsonIgnore
     private String createdBy;
+    @JsonIgnore
     private Long creationTime;
+    @JsonIgnore
     private String UpdatedBy;
+    @JsonIgnore
     private Long updatedTime;
 }
