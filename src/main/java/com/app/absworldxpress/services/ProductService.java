@@ -4,7 +4,7 @@ import com.app.absworldxpress.dto.ApiMessageResponse;
 import com.app.absworldxpress.dto.ApiResponse;
 import com.app.absworldxpress.dto.request.ProductEditRequest;
 import com.app.absworldxpress.dto.request.ProductRequest;
-import com.app.absworldxpress.dto.response.CategoryImageResponse;
+import com.app.absworldxpress.dto.response.ProductImageResponse;
 import com.app.absworldxpress.dto.response.ProductListResponse;
 import com.app.absworldxpress.model.ProductModel;
 import org.springframework.data.domain.Sort;
@@ -22,5 +22,5 @@ public interface ProductService {
 
     ResponseEntity<ApiMessageResponse> deleteProductImage(String token, String productId);
 
-    ResponseEntity<ApiResponse<CategoryImageResponse>> uploadProductImage(String token, MultipartFile aFile, String productId);
+    ResponseEntity<ApiResponse<ProductImageResponse>> uploadProductImage(String token, MultipartFile aFile, String productId);
 }

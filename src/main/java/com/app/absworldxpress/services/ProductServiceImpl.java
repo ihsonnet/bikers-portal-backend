@@ -5,7 +5,7 @@ import com.app.absworldxpress.dto.ApiResponse;
 import com.app.absworldxpress.dto.BasicTableInfo;
 import com.app.absworldxpress.dto.request.ProductEditRequest;
 import com.app.absworldxpress.dto.request.ProductRequest;
-import com.app.absworldxpress.dto.response.CategoryImageResponse;
+import com.app.absworldxpress.dto.response.ProductImageResponse;
 import com.app.absworldxpress.dto.response.ProductListResponse;
 import com.app.absworldxpress.jwt.services.AuthService;
 import com.app.absworldxpress.model.CategoryModel;
@@ -20,7 +20,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.server.ResponseStatusException;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -113,8 +116,8 @@ public class ProductServiceImpl implements ProductService{
     public ResponseEntity<ApiResponse<ProductModel>> editProduct(String token, ProductEditRequest productRequest, String productId) {
         if (authService.isThisUser("ADMIN", token)){
             Optional<ProductModel> productModelOptional = productRepository.findById(productId);
-            if (productModelOptional.isPresent()){
-                Optional<CategoryModel> categoryModelOptional = categoryRepository.findById(productRequest.getCategoryId());
+            Optional<CategoryModel> categoryModelOptional = categoryRepository.findById(productRequest.getCategoryId());
+            if (productModelOptional.isPresent() && categoryModelOptional.isPresent()){
                 ProductModel productModel = productModelOptional.get();
                 productModel.setProductName(productRequest.getProductName());
                 productModel.setProductDescription(productRequest.getProductDescription());
@@ -128,7 +131,7 @@ public class ProductServiceImpl implements ProductService{
                 return new ResponseEntity<>(new ApiResponse<>(200,"Product Updated Successfully",productModel),HttpStatus.OK);
             }
             else
-                return new ResponseEntity<>(new ApiResponse<>(400,"Product Not Found",null),HttpStatus.BAD_REQUEST);
+                return new ResponseEntity<>(new ApiResponse<>(400,"Product / Category Not Found",null),HttpStatus.BAD_REQUEST);
         }
         else
             return new ResponseEntity<>(new ApiResponse<>(400,"You have no permission",null),HttpStatus.BAD_REQUEST);
@@ -140,12 +143,57 @@ public class ProductServiceImpl implements ProductService{
     }
 
     @Override
-    public ResponseEntity<ApiMessageResponse> deleteProductImage(String token, String productId) {
-        return null;
+    public ResponseEntity<ApiResponse<ProductImageResponse>> uploadProductImage(String token, MultipartFile aFile, String productId) {
+        if (authService.isThisUser("ADMIN", token)){
+            if (productRepository.existsByProductId(productId)){
+                ProductModel productModel = productRepository.getById(productId);
+                BasicTableInfo basicTableInfo = utilService.generateBasicTableInfo(productModel.getProductName(), token);
+
+                MultipartFile[] multipartFiles = new MultipartFile[1];
+                multipartFiles[0] = aFile;
+                List<String> productImageLinks = new ArrayList<>();
+
+                try {
+                    productImageLinks = ImageUtilService.uploadImage(multipartFiles);
+                } catch (Exception e) {
+                    throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.toString());
+                }
+
+                productModel.setProductImage(productImageLinks.get(0));
+                productModel.setUpdatedBy(basicTableInfo.getCreateBy());
+                productModel.setUpdatedTime(basicTableInfo.getCreationTime());
+                productRepository.save(productModel);
+
+                ProductImageResponse productImageResponse = new ProductImageResponse();
+                productImageResponse.setProductImage(productImageLinks.get(0));
+                return
+                        new ResponseEntity<>(new ApiResponse<>(200,"ProductImage Uploaded Successfully",productImageResponse),HttpStatus.OK);
+            }
+            else {
+                return new ResponseEntity<>(new ApiResponse<>(200,"Product Not Found",null),HttpStatus.OK);
+            }
+        }
+        else
+            return new ResponseEntity<>(new ApiResponse(400,"You have no permission",null),HttpStatus.BAD_REQUEST);
     }
 
     @Override
-    public ResponseEntity<ApiResponse<CategoryImageResponse>> uploadProductImage(String token, MultipartFile aFile, String productId) {
-        return null;
+    public ResponseEntity<ApiMessageResponse> deleteProductImage(String token, String productId) {
+        if (authService.isThisUser("ADMIN", token)){
+            if (productRepository.existsByProductId(productId)){
+                ProductModel productModel = productRepository.getById(productId);
+
+                productModel.setProductImage(null);
+                productRepository.save(productModel);
+
+                return new ResponseEntity<>(new ApiMessageResponse(200,"ProductImage Deleted Successfully"),HttpStatus.OK);
+            }
+            else {
+                return new ResponseEntity<>(new ApiMessageResponse(200,"Product Not Found"),HttpStatus.OK);
+            }
+        }
+        else
+            return new ResponseEntity<>(new ApiMessageResponse(400,"You have no permission"),HttpStatus.BAD_REQUEST);
     }
+
 }

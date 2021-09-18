@@ -5,6 +5,7 @@ import com.app.absworldxpress.dto.ApiResponse;
 import com.app.absworldxpress.dto.request.ProductEditRequest;
 import com.app.absworldxpress.dto.request.ProductRequest;
 import com.app.absworldxpress.dto.response.CategoryImageResponse;
+import com.app.absworldxpress.dto.response.ProductImageResponse;
 import com.app.absworldxpress.dto.response.ProductListResponse;
 import com.app.absworldxpress.model.ProductModel;
 import com.app.absworldxpress.services.ProductService;
@@ -59,9 +60,9 @@ public class ProductController {
     }
 
     @PostMapping("/cpanel/image/{productId}")
-    public ResponseEntity<ApiResponse<CategoryImageResponse>> uploadProductImage(@RequestHeader(name = "Authorization") String token,
-                                                                                  @RequestParam(value = "image", required = true) MultipartFile aFile,
-                                                                                  @PathVariable String productId) {
+    public ResponseEntity<ApiResponse<ProductImageResponse>> uploadProductImage(@RequestHeader(name = "Authorization") String token,
+                                                                                @RequestParam(value = "image", required = true) MultipartFile aFile,
+                                                                                @PathVariable String productId) {
         return productService.uploadProductImage(token,aFile,productId);
     }
 
