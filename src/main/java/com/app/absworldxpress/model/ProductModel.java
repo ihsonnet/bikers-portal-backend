@@ -2,10 +2,7 @@ package com.app.absworldxpress.model;
 
 import lombok.*;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 
 @Entity
 @Builder
@@ -31,6 +28,7 @@ public class ProductModel {
     private double currentPrice;
     private double cashBack;
 
+    private int numberOfOrder;
     private int productQuantity;
     private int stockAvailable;
 

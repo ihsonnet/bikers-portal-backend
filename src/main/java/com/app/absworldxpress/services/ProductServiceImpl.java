@@ -26,6 +26,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import static org.springframework.data.domain.ExampleMatcher.GenericPropertyMatchers.contains;
+
 @Service
 public class ProductServiceImpl implements ProductService{
     @Autowired
@@ -83,23 +85,23 @@ public class ProductServiceImpl implements ProductService{
     }
 
     @Override
-    public ResponseEntity<ApiResponse<ProductListResponse>> getProductList(String productName, String sortBy, Sort.Direction orderBy, int pageSize, int pageNo) {
+    public ResponseEntity<ApiResponse<ProductListResponse>> getProductList(String productName, String categoryId, String productId, String sortBy, Sort.Direction orderBy, int pageSize, int pageNo) {
         ProductModel productModel = ProductModel.builder()
                 .productName(productName)
+                .productId(productId)
+                .categoryModel(CategoryModel.builder().catId(categoryId).build())
                 .build();
 
-        System.out.println("10");
         Pageable pageable;
         Sort sort = Sort.by(orderBy,sortBy);
 
-        pageable = PageRequest.of(0, 20,sort);
-        System.out.println("11");
+        pageable = PageRequest.of(pageNo, pageSize,sort);
         ExampleMatcher matcher = ExampleMatcher
                 .matchingAll()
-                .withMatcher("productName", ExampleMatcher.GenericPropertyMatchers.contains().ignoreCase());
-        System.out.println("12");
+                .withMatcher("productName", contains().ignoreCase());
+
         Page<ProductModel> productModelPage = productRepository.findAll(Example.of(productModel,matcher), pageable);
-        System.out.println("13");
+
         ProductListResponse productListResponse = new ProductListResponse(pageSize, pageNo, productModelPage.getContent().size(),
                 productModelPage.isLast(), productModelPage.getTotalElements(), productModelPage.getTotalPages(),
                 productModelPage.getContent());

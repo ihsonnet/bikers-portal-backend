@@ -28,11 +28,12 @@ public class ProductController {
     @GetMapping
     //all - by cat id - by name
     public ResponseEntity<ApiResponse<ProductListResponse>> getProductList(@RequestParam(required = false) String productName,
+                                                                           String categoryId, String productId,
                                                                            @RequestParam(defaultValue = "creationTime") String sortBy,
                                                                            @RequestParam(defaultValue = "ASC") Sort.Direction orderBy,
                                                                            @RequestParam(defaultValue = "20") int pageSize,
                                                                            @RequestParam(defaultValue = "0") int pageNo ){
-        return productService.getProductList(productName,sortBy,orderBy,pageSize,pageNo);
+        return productService.getProductList(productName,categoryId,productId,sortBy,orderBy,pageSize,pageNo);
     }
 
     @GetMapping("/cpanel/")

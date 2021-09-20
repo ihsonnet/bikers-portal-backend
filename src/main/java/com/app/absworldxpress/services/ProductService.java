@@ -14,7 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 public interface ProductService {
     ResponseEntity<ApiResponse<ProductModel>> addProduct(String token, ProductRequest productRequest);
 
-    ResponseEntity<ApiResponse<ProductListResponse>> getProductList(String productName, String sortBy, Sort.Direction orderBy, int pageSize, int pageNo);
+    ResponseEntity<ApiResponse<ProductListResponse>> getProductList(String productName,String categoryId, String productId, String sortBy, Sort.Direction orderBy, int pageSize, int pageNo);
 
     ResponseEntity<ApiResponse<ProductModel>> editProduct(String token, ProductEditRequest productRequest, String productId);
 
