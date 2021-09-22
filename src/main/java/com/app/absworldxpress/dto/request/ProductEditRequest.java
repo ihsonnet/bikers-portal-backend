@@ -15,8 +15,8 @@ public class ProductEditRequest {
 
     private String categoryId;
 
-    private double buyingPrice;
-    private double regularPrice;
-    private double currentPrice;
-    private double cashBack;
+    private Integer buyingPrice;
+    private Integer regularPrice;
+    private Integer currentPrice;
+    private Integer cashBack;
 }

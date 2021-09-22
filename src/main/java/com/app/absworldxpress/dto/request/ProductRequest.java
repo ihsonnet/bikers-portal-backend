@@ -12,14 +12,13 @@ import lombok.Setter;
 public class ProductRequest {
     private String productName;
     private String productDescription;
-    private String productImage;
 
     private String categoryId;
 
-    private double buyingPrice;
-    private double regularPrice;
-    private double currentPrice;
-    private double cashBack;
+    private Integer buyingPrice;
+    private Integer regularPrice;
+    private Integer currentPrice;
+    private Integer cashBack;
 
-    private int stockAvailable;
+    private Integer stockAvailable;
 }

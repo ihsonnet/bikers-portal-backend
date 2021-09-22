@@ -17,9 +17,9 @@ public class ProductResponse {
 
     private String categoryName;
 
-    private double regularPrice;
-    private double currentPrice;
-    private double cashBack;
+    private Integer regularPrice;
+    private Integer currentPrice;
+    private Integer cashBack;
 
-    private int stockAvailable;
+    private Integer stockAvailable;
 }

@@ -23,14 +23,14 @@ public class ProductModel {
     @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.REFRESH})
     private CategoryModel categoryModel;
 
-    private double buyingPrice;
-    private double regularPrice;
-    private double currentPrice;
-    private double cashBack;
+    private Integer buyingPrice;
+    private Integer regularPrice;
+    private Integer currentPrice;
+    private Integer cashBack;
 
-    private int numberOfOrder;
-    private int productQuantity;
-    private int stockAvailable;
+    private Integer numberOfOrder;
+    private Integer productQuantity;
+    private Integer stockAvailable;
 
     private String createdBy;
     private Long creationTime;
