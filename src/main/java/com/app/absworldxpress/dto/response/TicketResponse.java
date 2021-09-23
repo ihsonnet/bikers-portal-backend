@@ -1,29 +1,22 @@
-package com.app.absworldxpress.model;
+package com.app.absworldxpress.dto.response;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.app.absworldxpress.model.MessageModel;
 import lombok.*;
 
-import javax.persistence.*;
 import java.util.List;
 
-@Data
-@Entity
-@Builder
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-@Table(name = "Ticket_table")
-public class TicketModel {
-    @Id
+@Builder
+public class TicketResponse {
     private String ticketId;
     private String ticketSlug;
     private String ticketSKU;
     private String ticketTitle;
 
-    @JsonIgnore
-    @OneToMany(cascade = CascadeType.ALL)
     private List<MessageModel> messageModelList;
 
     private Boolean isOpen;
