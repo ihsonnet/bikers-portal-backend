@@ -114,6 +114,42 @@ public class ProductServiceImpl implements ProductService{
         }
     }
 
+
+    @Override
+    public ResponseEntity<ApiResponse<ProductListResponse>> getProductListForCpanel(String token, String productName, String categoryId, String productId, String sortBy, Sort.Direction orderBy, int pageSize, int pageNo) {
+        if (authService.isThisUser("ADMIN", token)){
+            ProductModel productModel = ProductModel.builder()
+                    .productName(productName)
+                    .productId(productId)
+                    .categoryModel(CategoryModel.builder().catId(categoryId).build())
+                    .build();
+
+            Pageable pageable;
+            Sort sort = Sort.by(orderBy,sortBy);
+
+            pageable = PageRequest.of(pageNo, pageSize,sort);
+            ExampleMatcher matcher = ExampleMatcher
+                    .matchingAll()
+                    .withMatcher("productName", contains().ignoreCase());
+
+            Page<ProductModel> productModelPage = productRepository.findAll(Example.of(productModel,matcher), pageable);
+
+            ProductListResponse productListResponse = new ProductListResponse(pageSize, pageNo, productModelPage.getContent().size(),
+                    productModelPage.isLast(), productModelPage.getTotalElements(), productModelPage.getTotalPages(),
+                    productModelPage.getContent());
+
+
+            if (productModelPage.isEmpty()) {
+                return new ResponseEntity<>(new ApiResponse<>(200, "No Product Found", productListResponse), HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>(new ApiResponse<>(200, "Product Found", productListResponse), HttpStatus.OK);
+            }
+        }
+        else
+            return new ResponseEntity<>(new ApiResponse(400,"You have no permission",null),HttpStatus.BAD_REQUEST);
+
+    }
+
     @Override
     public ResponseEntity<ApiResponse<ProductModel>> editProduct(String token, ProductEditRequest productRequest, String productId) {
         if (authService.isThisUser("ADMIN", token)){
@@ -188,6 +224,7 @@ public class ProductServiceImpl implements ProductService{
         else
             return new ResponseEntity<>(new ApiResponse(400,"You have no permission",null),HttpStatus.BAD_REQUEST);
     }
+
 
     @Override
     public ResponseEntity<ApiMessageResponse> deleteProductImage(String token, String productId) {

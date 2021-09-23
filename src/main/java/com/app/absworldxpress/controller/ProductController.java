@@ -37,8 +37,14 @@ public class ProductController {
     }
 
     @GetMapping("/cpanel/")
-    public ResponseEntity<ApiResponse<List<ProductModel>>> getProductListForCpanel(){
-        return null;
+    public ResponseEntity<ApiResponse<ProductListResponse>> getProductListForCpanel(@RequestHeader(name = "Authorization") String token,
+                                                                                   @RequestParam(required = false) String productName,
+                                                                                   String categoryId, String productId,
+                                                                                   @RequestParam(defaultValue = "creationTime") String sortBy,
+                                                                                   @RequestParam(defaultValue = "ASC") Sort.Direction orderBy,
+                                                                                   @RequestParam(defaultValue = "20") int pageSize,
+                                                                                   @RequestParam(defaultValue = "0") int pageNo ){
+        return productService.getProductListForCpanel(token,productName,categoryId,productId,sortBy,orderBy,pageSize,pageNo);
     }
 
     @PostMapping("/cpanel/")
@@ -47,7 +53,7 @@ public class ProductController {
         return productService.addProduct(token,productRequest);
     }
 
-    @PostMapping("/cpanel/{productId}")
+    @PutMapping("/cpanel/{productId}")
     public ResponseEntity<ApiResponse<ProductModel>> editProduct(@RequestHeader(name = "Authorization") String  token,
                                                                     @RequestBody ProductEditRequest productRequest,
                                                                     @PathVariable String productId){

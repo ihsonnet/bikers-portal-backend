@@ -23,4 +23,6 @@ public interface ProductService {
     ResponseEntity<ApiMessageResponse> deleteProductImage(String token, String productId);
 
     ResponseEntity<ApiResponse<ProductImageResponse>> uploadProductImage(String token, MultipartFile aFile, String productId);
+
+    ResponseEntity<ApiResponse<ProductListResponse>> getProductListForCpanel(String token, String productName, String categoryId, String productId, String sortBy, Sort.Direction orderBy, int pageSize, int pageNo);
 }

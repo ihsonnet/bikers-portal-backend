@@ -21,7 +21,7 @@ public class OrderModel {
     private String customerPhoneNumber;
     private String deliveryAddress;
 
-    private double orderAmount;
+    private Integer orderAmount;
 
     @OneToMany(cascade = {CascadeType.DETACH, CascadeType.REFRESH})
     private List<ProductModel> productModelList;
