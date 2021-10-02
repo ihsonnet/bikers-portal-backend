@@ -24,7 +24,7 @@ public class CategoryController {
     private CategoryService categoryService;
 
     @PostMapping
-    public ResponseEntity<ApiMessageResponse> addCategory(@RequestHeader(name = "Authorization") String token,@RequestBody CategoryRequest categoryRequest){
+    public ResponseEntity<ApiResponse<CategoryResponse>> addCategory(@RequestHeader(name = "Authorization") String token,@RequestBody CategoryRequest categoryRequest){
         return categoryService.addCategory(token,categoryRequest);
     }
 

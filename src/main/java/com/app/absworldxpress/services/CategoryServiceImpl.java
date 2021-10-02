@@ -5,6 +5,7 @@ import com.app.absworldxpress.dto.ApiResponse;
 import com.app.absworldxpress.dto.BasicTableInfo;
 import com.app.absworldxpress.dto.request.CategoryRequest;
 import com.app.absworldxpress.dto.response.CategoryImageResponse;
+import com.app.absworldxpress.dto.response.CategoryResponse;
 import com.app.absworldxpress.jwt.services.AuthService;
 import com.app.absworldxpress.model.CategoryModel;
 import com.app.absworldxpress.repository.CategoryRepository;
@@ -36,7 +37,7 @@ public class CategoryServiceImpl implements CategoryService{
     ImageUtilService imageUtilService;
 
     @Override
-    public ResponseEntity<ApiMessageResponse> addCategory(String token, CategoryRequest categoryRequest) {
+    public ResponseEntity<ApiResponse<CategoryResponse>> addCategory(String token, CategoryRequest categoryRequest) {
 
         if (authService.isThisUser("ADMIN",token)){
             BasicTableInfo basicTableInfo = utilService.generateBasicTableInfo(categoryRequest.getCatName(), token);
@@ -50,10 +51,10 @@ public class CategoryServiceImpl implements CategoryService{
             category.setCreationTime(basicTableInfo.getCreationTime());
 
             categoryRepository.save(category);
-            return new ResponseEntity<>(new ApiMessageResponse(201,"Category Created Successfully"),HttpStatus.CREATED);
+            return new ResponseEntity<>(new ApiResponse(201,"Category Created Successfully",category),HttpStatus.CREATED);
         }
         else
-            return new ResponseEntity<>(new ApiMessageResponse(400,"You have no permission"),HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(new ApiResponse(401,"You have no permission",null),HttpStatus.BAD_REQUEST);
 
     }
 
@@ -79,10 +80,10 @@ public class CategoryServiceImpl implements CategoryService{
                 return new ResponseEntity<>(new ApiMessageResponse(200,"Category Deleted Successfully"),HttpStatus.OK);
             }
             else
-                return new ResponseEntity<>(new ApiMessageResponse(400,"Category Not Found"),HttpStatus.BAD_REQUEST);
+                return new ResponseEntity<>(new ApiMessageResponse(404,"Category Not Found"),HttpStatus.BAD_REQUEST);
         }
         else
-            return new ResponseEntity<>(new ApiMessageResponse(400,"You have no permission"),HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(new ApiMessageResponse(401,"You have no permission"),HttpStatus.BAD_REQUEST);
     }
 
     @Override
@@ -101,10 +102,10 @@ public class CategoryServiceImpl implements CategoryService{
                 return new ResponseEntity<>(new ApiMessageResponse(200,"Category Updated Successfully"),HttpStatus.OK);
             }
             else
-                return new ResponseEntity<>(new ApiMessageResponse(400,"Category Not Found"),HttpStatus.BAD_REQUEST);
+                return new ResponseEntity<>(new ApiMessageResponse(404,"Category Not Found"),HttpStatus.BAD_REQUEST);
         }
         else
-           return new ResponseEntity<>(new ApiMessageResponse(400,"You have no permission"),HttpStatus.BAD_REQUEST);
+           return new ResponseEntity<>(new ApiMessageResponse(401,"You have no permission"),HttpStatus.BAD_REQUEST);
     }
 
     @Override
@@ -136,7 +137,7 @@ public class CategoryServiceImpl implements CategoryService{
             }
         }
         else
-            return new ResponseEntity<>(new ApiResponse(400,"You have no permission",null),HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(new ApiResponse(401,"You have no permission",null),HttpStatus.BAD_REQUEST);
     }
 
     @Override
@@ -156,7 +157,7 @@ public class CategoryServiceImpl implements CategoryService{
             }
         }
         else
-            return new ResponseEntity<>(new ApiMessageResponse(400,"You have no permission"),HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(new ApiMessageResponse(401,"You have no permission"),HttpStatus.BAD_REQUEST);
     }
 
 }

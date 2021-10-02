@@ -84,10 +84,10 @@ public class SupportServiceImpl implements SupportService{
                     .isOpen(true)
                     .build();
 
-            return new ResponseEntity<>(new ApiResponse<>(200,"Ticket Created",ticketResponse), HttpStatus.CREATED);
+            return new ResponseEntity<>(new ApiResponse<>(201,"Ticket Created",ticketResponse), HttpStatus.CREATED);
         }
         else
-            return new ResponseEntity<>(new ApiResponse<>(200,"You have no permission",null), HttpStatus.CREATED);
+            return new ResponseEntity<>(new ApiResponse<>(401,"You have no permission",null), HttpStatus.CREATED);
     }
 
     @Override
@@ -116,10 +116,10 @@ public class SupportServiceImpl implements SupportService{
                 return new ResponseEntity<>(new ApiMessageResponse(200, "Messege Added"),HttpStatus.OK);
             }
             else
-                return new ResponseEntity<>(new ApiMessageResponse(400, "You have no permission"),HttpStatus.BAD_REQUEST);
+                return new ResponseEntity<>(new ApiMessageResponse(401, "You have no permission"),HttpStatus.BAD_REQUEST);
         }
         else
-            return new ResponseEntity<>(new ApiMessageResponse(400, "Ticket not found"),HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(new ApiMessageResponse(404, "Ticket not found"),HttpStatus.BAD_REQUEST);
     }
 
     @Override
@@ -137,10 +137,10 @@ public class SupportServiceImpl implements SupportService{
                 return new ResponseEntity<>(new ApiMessageResponse(200, "Ticket Closed"),HttpStatus.OK);
             }
             else
-                return new ResponseEntity<>(new ApiMessageResponse(400, "You have no permission"),HttpStatus.BAD_REQUEST);
+                return new ResponseEntity<>(new ApiMessageResponse(401, "You have no permission"),HttpStatus.BAD_REQUEST);
         }
         else
-            return new ResponseEntity<>(new ApiMessageResponse(400, "Ticket not found"),HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(new ApiMessageResponse(404, "Ticket not found"),HttpStatus.BAD_REQUEST);
     }
 
     @Override
@@ -191,9 +191,9 @@ public class SupportServiceImpl implements SupportService{
                 return new ResponseEntity<>(new ApiResponse<>(200,"Ticket Found",ticketResponse), HttpStatus.OK);
             }
             else
-                return new ResponseEntity<>(new ApiResponse<>(400,"You have no permission",null), HttpStatus.BAD_REQUEST);
+                return new ResponseEntity<>(new ApiResponse<>(401,"You have no permission",null), HttpStatus.BAD_REQUEST);
         }
         else
-            return new ResponseEntity<>(new ApiResponse<>(400,"Ticket Not Found",null), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(new ApiResponse<>(404,"Ticket Not Found",null), HttpStatus.BAD_REQUEST);
     }
 }

@@ -77,10 +77,10 @@ public class ProductServiceImpl implements ProductService{
                 return new ResponseEntity<>(new ApiResponse<>(201,"Product Added Successfully",productModel), HttpStatus.CREATED);
             }
             else
-                return new ResponseEntity<>(new ApiResponse<>(400,"Category Not Found",null), HttpStatus.BAD_REQUEST);
+                return new ResponseEntity<>(new ApiResponse<>(404,"Category Not Found",null), HttpStatus.BAD_REQUEST);
         }
         else
-            return new ResponseEntity<>(new ApiResponse<>(400,"Your have no Permission",null), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(new ApiResponse<>(401,"Your have no Permission",null), HttpStatus.BAD_REQUEST);
 
     }
 
@@ -146,7 +146,7 @@ public class ProductServiceImpl implements ProductService{
             }
         }
         else
-            return new ResponseEntity<>(new ApiResponse(400,"You have no permission",null),HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(new ApiResponse(401,"You have no permission",null),HttpStatus.BAD_REQUEST);
 
     }
 
@@ -169,10 +169,10 @@ public class ProductServiceImpl implements ProductService{
                 return new ResponseEntity<>(new ApiResponse<>(200,"Product Updated Successfully",productModel),HttpStatus.OK);
             }
             else
-                return new ResponseEntity<>(new ApiResponse<>(400,"Product / Category Not Found",null),HttpStatus.BAD_REQUEST);
+                return new ResponseEntity<>(new ApiResponse<>(404,"Product / Category Not Found",null),HttpStatus.BAD_REQUEST);
         }
         else
-            return new ResponseEntity<>(new ApiResponse<>(400,"You have no permission",null),HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(new ApiResponse<>(401,"You have no permission",null),HttpStatus.BAD_REQUEST);
     }
 
     @Override
@@ -184,10 +184,10 @@ public class ProductServiceImpl implements ProductService{
                 return new ResponseEntity<>(new ApiMessageResponse(200, "Product Deleted Successfully"),HttpStatus.OK);
             }
             else
-                return new ResponseEntity<>(new ApiMessageResponse(400, "Product Not Found"),HttpStatus.BAD_REQUEST);
+                return new ResponseEntity<>(new ApiMessageResponse(404, "Product Not Found"),HttpStatus.BAD_REQUEST);
         }
         else
-            return new ResponseEntity<>(new ApiMessageResponse(400, "You have no permission"),HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(new ApiMessageResponse(401, "You have no permission"),HttpStatus.BAD_REQUEST);
     }
 
     @Override
@@ -218,11 +218,11 @@ public class ProductServiceImpl implements ProductService{
                         new ResponseEntity<>(new ApiResponse<>(200,"ProductImage Uploaded Successfully",productImageResponse),HttpStatus.OK);
             }
             else {
-                return new ResponseEntity<>(new ApiResponse<>(200,"Product Not Found",null),HttpStatus.OK);
+                return new ResponseEntity<>(new ApiResponse<>(404,"Product Not Found",null),HttpStatus.OK);
             }
         }
         else
-            return new ResponseEntity<>(new ApiResponse(400,"You have no permission",null),HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(new ApiResponse(401,"You have no permission",null),HttpStatus.BAD_REQUEST);
     }
 
 
@@ -238,11 +238,11 @@ public class ProductServiceImpl implements ProductService{
                 return new ResponseEntity<>(new ApiMessageResponse(200,"ProductImage Deleted Successfully"),HttpStatus.OK);
             }
             else {
-                return new ResponseEntity<>(new ApiMessageResponse(200,"Product Not Found"),HttpStatus.OK);
+                return new ResponseEntity<>(new ApiMessageResponse(404,"Product Not Found"),HttpStatus.OK);
             }
         }
         else
-            return new ResponseEntity<>(new ApiMessageResponse(400,"You have no permission"),HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(new ApiMessageResponse(401,"You have no permission"),HttpStatus.BAD_REQUEST);
     }
 
 }
