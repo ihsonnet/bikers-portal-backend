@@ -1,8 +1,10 @@
 package com.app.absworldxpress.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Builder
@@ -31,6 +33,13 @@ public class ProductModel {
     private Integer numberOfOrder;
     private Integer productQuantity;
     private Integer stockAvailable;
+
+    @OneToMany(cascade = CascadeType.ALL)
+    private List<ReviewModel> reviewModelList;
+    private Double productRating;
+    @CollectionTable
+    @ElementCollection
+    private List<String> purchasedBy;
 
     private String createdBy;
     private Long creationTime;
