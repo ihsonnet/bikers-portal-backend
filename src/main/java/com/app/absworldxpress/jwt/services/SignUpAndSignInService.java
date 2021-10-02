@@ -139,9 +139,17 @@ public class SignUpAndSignInService {
 
 
     public JwtResponse signIn(LoginForm loginRequest) {
-        Optional<User> userOptional = userRepository.findByUsername(loginRequest.getUsername());
+
+        Optional<User> userOptional;
+        if (loginRequest.getUsername().contains("@")){
+                userOptional = userRepository.findByEmail(loginRequest.getUsername());
+        }
+        else {
+                userOptional = userRepository.findByUsername(loginRequest.getUsername());
+        }
 
         String userName;
+
         if (userOptional.isPresent()) {
             userName = userOptional.get().getUsername();
         } else {
