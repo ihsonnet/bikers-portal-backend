@@ -14,8 +14,7 @@ import java.util.Set;
 public class LoggedUserDetailsResponse {
 
     private String id;
-    private String firstName;
-    private String lastName;
+    private String fullName;
     private String email;
     private String username;
     private String phoneNo;

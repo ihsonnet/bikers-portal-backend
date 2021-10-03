@@ -31,12 +31,11 @@ public class JoiningForm {
     @Size(min = 6, max = 40)
     private String password;
     String address;
+
     @NotBlank
-    @Size(min = 1, max = 50)
-    private String firstName;
-    @NotBlank
-    @Size(min = 1, max = 50)
-    private String lastName;
+    @Size(min = 3, max = 50)
+    private String fullName;
+
 
     private String createdBy;
     private String createdOn;

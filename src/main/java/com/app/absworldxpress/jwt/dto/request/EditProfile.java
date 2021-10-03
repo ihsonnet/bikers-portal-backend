@@ -17,7 +17,7 @@ public class EditProfile {
 
     @NotBlank
     @Size(min = 3, max = 50)
-    private String name;
+    private String fullName;
 
     @NotBlank
     @Size(min = 11, max = 11)

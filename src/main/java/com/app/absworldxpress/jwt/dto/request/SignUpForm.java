@@ -15,11 +15,8 @@ import java.util.Set;
 public class SignUpForm {
 
     @NotBlank
-    @Size(min = 1, max = 50)
-    private String firstName;
-    @NotBlank
-    @Size(min = 1, max = 50)
-    private String lastName;
+    @Size(min = 3, max = 50)
+    private String fullName;
 
     @NotBlank
     @Size(max = 60)

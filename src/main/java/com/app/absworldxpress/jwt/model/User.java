@@ -33,11 +33,7 @@ public class User {
 
     @NotBlank
     @Size(min = 3, max = 50)
-    private String firstName;
-
-    @NotBlank
-    @Size(min = 3, max = 50)
-    private String lastName;
+    private String fullName;
 
     @Column(unique = true)
     @NotBlank

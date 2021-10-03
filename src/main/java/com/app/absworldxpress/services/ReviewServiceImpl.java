@@ -42,7 +42,7 @@ public class ReviewServiceImpl implements ReviewService{
         if (userOptional.isPresent()){
             ReviewModel reviewModel = ReviewModel.builder()
                     .reviewId(basicTableInfo.getId())
-                    .reviewerName(userOptional.get().getFirstName())
+                    .reviewerName(userOptional.get().getFullName())
                     .rating(addReviewRequest.getRating())
                     .comment(addReviewRequest.getComment())
                     .createdBy(basicTableInfo.getCreateBy())

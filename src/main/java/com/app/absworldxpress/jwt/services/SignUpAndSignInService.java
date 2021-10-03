@@ -58,8 +58,7 @@ public class SignUpAndSignInService {
         UUID id = UUID.randomUUID();
         String uuid = id.toString();
         user.setId(uuid);
-        user.setFirstName(signUpRequest.getFirstName());
-        user.setLastName(signUpRequest.getLastName());
+        user.setFullName(signUpRequest.getFullName());
         String[] arrOfUsername = signUpRequest.getEmail().split("@", 2);
         user.setUsername(arrOfUsername[0]);
         user.setEmail(signUpRequest.getEmail());
@@ -107,8 +106,7 @@ public class SignUpAndSignInService {
         UUID id = UUID.randomUUID();
         String uuid = id.toString();
         user.setId(uuid);
-        user.setFirstName(signUpRequest.getFirstName());
-        user.setLastName(signUpRequest.getLastName());
+        user.setFullName(signUpRequest.getFullName());
 
         String[] arrOfUsername = signUpRequest.getEmail().split("@", 2);
         user.setUsername(arrOfUsername[0]);
@@ -184,8 +182,8 @@ public class SignUpAndSignInService {
             if (userOptional.isPresent()) {
                 User user = userOptional.get();
 
-                UserResponse userResponse = new UserResponse(user.getId(), user.getUsername(), user.getEmail(), user.getFirstName(),
-                        user.getLastName(), user.getPhoneNo(), authService.getRolesStringFromRole(user.getRoles()), user.getCreatedBy(), user.getCreatedOn());
+                UserResponse userResponse = new UserResponse(user.getId(), user.getUsername(), user.getEmail(), user.getFullName(),
+                        user.getPhoneNo(), authService.getRolesStringFromRole(user.getRoles()), user.getCreatedBy(), user.getCreatedOn());
 
                 HttpHeaders httpHeaders = new HttpHeaders();
                 httpHeaders.add("massage", "OK");
@@ -317,8 +315,7 @@ public class SignUpAndSignInService {
 //        Team team = teamRepository.findByCreatedBy(user.get().getId()).get();
 
         loggedUserDetailsResponse.setId(user.get().getId());
-        loggedUserDetailsResponse.setFirstName(user.get().getFirstName());
-        loggedUserDetailsResponse.setLastName(user.get().getLastName());
+        loggedUserDetailsResponse.setFullName(user.get().getFullName());
         loggedUserDetailsResponse.setUsername(user.get().getUsername());
         loggedUserDetailsResponse.setEmail(user.get().getEmail());
         loggedUserDetailsResponse.setPhoneNo(user.get().getPhoneNo());
